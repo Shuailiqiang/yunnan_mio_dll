@@ -1,0 +1,20 @@
+{
+	"infno": "0010",
+	"msgid": "00000000",
+	"mdtrtarea_admvs": "000000000",
+	"insuplc_admdvs": "",
+	"recer_sys_code": "string",
+	"dev_no": "string",
+	"dev_safe_info": "string",
+	"cainfo": "string",
+	"signtype": "string",
+	"infver": "string",
+	"opter_type": "1",
+	"opter": "string",
+	"opter_name": "string",
+	"inf_time": "string",
+	"fixmedins_code": "string",
+	"fixmedins_name": "string",
+	"sign_no": "string",
+	"input": "@@@@inputdata@@@"
+}

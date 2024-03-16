@@ -1,0 +1,6 @@
+{"http":{"keepalive":1,"keepidle":110,"keepintvl":200,"timeout":600,"connecttimeout":60},
+"post":{"size":409600},
+                "enctype":"",
+                "encdat":"datafile-pub.key",
+"logtype":"enc"
+}

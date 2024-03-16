@@ -1,0 +1,28 @@
+{
+	"carddriver": [{
+		"name": "金邦达GP700",
+		"folder": "jbd_gp700",
+		"isold": "0"
+	}, {
+		"name": "金邦达NGR",
+		"folder": "jbd_ngr",
+		"isold": "0"
+	}, {
+		"name": "神思",
+		"folder": "shensi_ss",
+		"isold": "0"
+	},{
+		"name": "金邦达神思",
+		"folder": "jbd_ss",
+		"isold": "0"
+	},{
+		"name": "金邦达德卡",
+		"folder": "jbd_deka",
+		"isold": "1"
+	},{
+		"name": "德卡",
+		"folder": "deka_t10",
+		"isold": "0"
+	}
+	]
+}
