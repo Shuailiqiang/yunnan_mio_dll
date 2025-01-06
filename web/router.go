@@ -2,6 +2,7 @@ package web
 
 import (
 	"YunNanDll/dllInvoke"
+	"YunNanDll/entity"
 	"YunNanDll/util"
 	"log"
 	"net/http"
@@ -21,7 +22,13 @@ func Init(w http.ResponseWriter, r *http.Request) {
 	log.Println("infosyssign ===> ", infosyssign)
 	log.Println("url ===> ", url)
 
-	response, dllErr := dllInvoke.Init_Local(fixmedins_code, infosyscode, infosyssign, url)
+	config := entity.Config{}
+	config.ApiParam.Fixmedins_code = fixmedins_code
+	config.ApiParam.Infosyscode = infosyscode
+	config.ApiParam.Infosyssign = infosyssign
+	config.ApiParam.Url = url
+
+	response, dllErr := dllInvoke.Init_Local(&config)
 
 	//校验dll
 	if dllErr != nil {

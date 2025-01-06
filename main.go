@@ -20,32 +20,36 @@ func main() {
 		log.Fatal("Failed to open log file:", logErr)
 	}
 	// 设置日志的输出目标为文件和控制台
-	multiWriter := io.MultiWriter(file, os.Stdout) // 添加控制台输出
+	multiWriter := io.MultiWriter(file, os.Stdout)
 	log.SetOutput(multiWriter)
-	// 设置日志的输出目标和格式
 
+	// 设置日志的输出目标和格式
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	log.Println("init log success")
 
 	//本地加载动态库
-	log.Println("load dll CHSInterfaceYn.dll ")
+	log.Print("load dll CHSInterfaceYn.dll ... ")
 	dllInvoke.LoadDirDll()
+	log.Println("load success ")
 
 	//本地加载配置文件
+	log.Print("load YunNanDll.yaml ... ")
 	util.InitConfig("YunNanDll.yaml")
 	log.Println("load success")
 
 	//本地初始化动态库
-	log.Println("init dll CHSInterfaceYn.dll ")
-	dllInvoke.Init_Local(parameter.Conf.ApiParam.Fixmedins_code, parameter.Conf.ApiParam.Infosyscode, parameter.Conf.ApiParam.Infosyssign, parameter.Conf.ApiParam.Url)
+	log.Print("init dll CHSInterfaceYn.dll ... ")
+	dllInvoke.Init_Local(parameter.Conf)
+	log.Println("init success")
 
 	//启动web服务器
-	log.Println("Starting WebServer")
+	log.Print("Starting WebServer ... ")
 	web.Start()
+	log.Println("Start success")
 
 	//启动系统托盘
-	log.Println("Starting application")
+	log.Print("Starting application ... ")
 	sysClient.Start()
-	log.Println("Starting success")
+	log.Println("Start success")
 
 }

@@ -1,6 +1,7 @@
 package dllInvoke
 
 import (
+	"YunNanDll/entity"
 	"YunNanDll/parameter"
 	"YunNanDll/util"
 	"errors"
@@ -12,7 +13,7 @@ import (
 )
 
 func LoadDirDll() error {
-	dllPath := "./CHSInterfaceYn.dll"
+	dllPath := "CHSInterfaceYn.dll"
 	if _, err := os.Stat(dllPath); os.IsNotExist(err) {
 		log.Println("CHSInterfaceYn.dll is not exist:", dllPath)
 		return err
@@ -20,7 +21,11 @@ func LoadDirDll() error {
 		log.Println("CHSInterfaceYn.dll is exist")
 	}
 
-	parameter.SiInterface_hsf = syscall.NewLazyDLL("CHSInterfaceYn.dll")
+	parameter.SiInterface_DLL = syscall.NewLazyDLL("CHSInterfaceYn.dll")
+	if parameter.SiInterface_DLL == nil {
+		log.Println("load CHSInterfaceYn.dll faild")
+		return errors.New("load CHSInterfaceYn.dll faild")
+	}
 	return nil
 }
 
@@ -41,7 +46,7 @@ func BusinessHandle_Local(fixmedins_code, infosyscode, infosyssign, inputData st
 	pErrMsg := uintptr(unsafe.Pointer(&errMsg[0]))
 
 	//调用动态库
-	BusinessHandle := parameter.SiInterface_hsf.NewProc("BusinessHandle")
+	BusinessHandle := parameter.SiInterface_DLL.NewProc("BusinessHandle")
 	ret, _, _ := BusinessHandle.Call(fixmedins_code_uintptr, infosyscode_uintptr, infosyssign_uintptr, inputData_uintptr, pOutputInfo, pErrMsg)
 
 	log.Println("BusinessHandle resultCode ===>", ret)
@@ -64,20 +69,20 @@ func BusinessHandle_Local(fixmedins_code, infosyscode, infosyssign, inputData st
 	return response, nil
 }
 
-func Init_Local(fixmedins_code, infosyscode, infosyssign, url string) (string, error) {
+func Init_Local(config *entity.Config) (string, error) {
 
 	//调用动态库的入参
-	fixmedins_code_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(fixmedins_code)))
-	infosyscode_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(infosyscode)))
-	infosyssign_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(infosyssign)))
-	url_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(url)))
+	fixmedins_code_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(config.ApiParam.Fixmedins_code)))
+	infosyscode_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(config.ApiParam.Infosyscode)))
+	infosyssign_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(config.ApiParam.Infosyssign)))
+	url_uintptr := uintptr(unsafe.Pointer(syscall.StringBytePtr(config.ApiParam.Url)))
 
 	// 获取出参的指针
 	errMsg := make([]byte, parameter.POINTER_SIZE)
 	pErrMsg := uintptr(unsafe.Pointer(&errMsg[0]))
 
 	//调用动态库
-	BusinessHandle := parameter.SiInterface_hsf.NewProc("Init")
+	BusinessHandle := parameter.SiInterface_DLL.NewProc("Init")
 	ret, _, _ := BusinessHandle.Call(fixmedins_code_uintptr, infosyscode_uintptr, infosyssign_uintptr, url_uintptr, pErrMsg)
 
 	log.Println("Init resultCode ===>", ret)
@@ -91,5 +96,6 @@ func Init_Local(fixmedins_code, infosyscode, infosyssign, url string) (string, e
 		return errResponse, errors.New(errResponse)
 	}
 
+	parameter.InitStatus = true
 	return "成功", nil
 }

@@ -14,11 +14,11 @@ func Start() {
 	// 创建默认的多路复用器
 	mux := http.NewServeMux()
 
-	// 设置路由，限制请求方式中间件
+	// 设置路由，限制请求方式
 	mux.Handle("/Init", onlyGet(http.HandlerFunc(Init)))
 	mux.Handle("/BusinessHandle", onlyPost(http.HandlerFunc(BusinessHandle)))
 
-	//启动服务器
+	//设置服务器
 	srv := &http.Server{
 		Addr:    ":" + parameter.Conf.Port, // 默认端口
 		Handler: mux,                       // 使用默认的多路复用器
